@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      devise_for :users, controllers: {
+        registrations: 'api/v1/users/registrations',
+        sessions: 'api/v1/users/sessions',
+        passwords: 'api/v1/users/passwords'
+      }
+    end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -8,7 +17,9 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/*
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
   # Defines the root path route ("/")
   # root "posts#index"
 end
