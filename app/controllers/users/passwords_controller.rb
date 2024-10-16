@@ -1,5 +1,5 @@
 # app/controllers/api/v1/users/passwords_controller.rb
-class Api::V1::Users::PasswordsController < Devise::PasswordsController
+class Users::PasswordsController < Devise::PasswordsController
   skip_before_action :verify_authenticity_token
 
   def create

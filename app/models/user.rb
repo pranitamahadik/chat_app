@@ -5,6 +5,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   def generate_jwt
-    JWT.encode({ id: self.id, exp: 24.hours.from_now.to_i }, Rails.application.credentials.devise_jwt_secret_key)
+    JWT.encode({ id: self.id, exp: 24.hours.from_now.to_i }, Rails.application.credentials.secret_key_base)
   end
 end
