@@ -1,13 +1,12 @@
 require 'sidekiq/web'
 Rails.application.routes.draw do
-  devise_for :users,  defaults: { format: :json }, controllers: {
+  devise_for :users, controllers: {
         registrations: 'users/registrations',
         sessions: 'users/sessions',
         passwords: 'users/passwords'
       }
   namespace :api, defaults: {format: 'json'}  do
     namespace :v1 do
-      
       resources :chat_rooms, only: [:index, :create] do
         resources :messages, only: [:create]
       end

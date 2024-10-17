@@ -14,12 +14,16 @@ class Users::PasswordsController < Devise::PasswordsController
 
   def update
     user = User.reset_password_by_token(password_reset_params)
+    debugger
     if user.errors.empty?
+      flash[:notice] = 'Password has been reset successfully.'
       render json: { message: 'Password has been reset successfully.' }, status: :ok
     else
       render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
+
 
   private
 
