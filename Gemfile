@@ -39,6 +39,7 @@ gem 'dotenv-rails', groups: [:development, :test]
 gem "letter_opener"
 gem 'letter_opener_web'
 gem 'byebug'
+gem 'sidekiq'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

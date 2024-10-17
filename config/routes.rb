@@ -1,12 +1,20 @@
+require 'sidekiq/web'
 Rails.application.routes.draw do
-  namespace :api do
-    namespace :v1 do
-      devise_for :users, controllers: {
-        registrations: 'api/v1/users/registrations',
-        sessions: 'api/v1/users/sessions',
-        passwords: 'api/v1/users/passwords'
+  devise_for :users,  defaults: { format: :json }, controllers: {
+        registrations: 'users/registrations',
+        sessions: 'users/sessions',
+        passwords: 'users/passwords'
       }
+  namespace :api, defaults: {format: 'json'}  do
+    namespace :v1 do
+      
+      resources :chat_rooms, only: [:index, :create] do
+        resources :messages, only: [:create]
+      end
+      resources :direct_messages, only: [:index, :create]
+      get 'users/online_status', to: 'users#online_status'
     end
+
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -20,6 +28,8 @@ Rails.application.routes.draw do
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
+  mount ActionCable.server => '/cable'
+  mount Sidekiq::Web => '/sidekiq'
   # Defines the root path route ("/")
   # root "posts#index"
 end
